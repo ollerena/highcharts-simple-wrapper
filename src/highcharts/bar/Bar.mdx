@@ -1,0 +1,128 @@
+---
+name: Bar
+menu: Highcharts
+route: /charts/bar
+---
+
+import {Playground, PropsTable} from 'docz';
+import Bar from './Bar';
+
+# Bar Chart
+
+<PropsTable of={Bar} />
+
+### Nested types
+
+```js
+type DashStyle =
+	| 'Solid'
+	| 'ShortDash'
+	| 'ShortDot'
+	| 'ShortDashDot'
+	| 'ShortDashDotDot'
+	| 'Dot'
+	| 'Dash'
+	| 'LongDash'
+	| 'DashDot'
+	| 'LongDashDot'
+	| 'LongDashDotDot';
+```
+
+```js
+type Series {
+	/**Only needed for Type Checking, should not be setted*/
+	type: never;
+	name: string;
+	color: string;
+	data: [Date | string, number | null][];
+};
+```
+
+```js
+type PlotLine {
+	color?: string;
+	value: number;
+	label?: string;
+	dashStyle?: DashStyle;
+};
+```
+
+```js
+tyoe PlotBand {
+	color: string;
+	from: Date;
+	to: Date;
+	label: string;
+	labelColor: string;
+};
+```
+
+### Default Bar Chart
+
+<Playground>
+	<Bar
+		type="datetime"
+		showExportMenu
+		series={[
+			{
+				name: 'Legend of Chart 1',
+				color: 'lightblue',
+				data: [
+					[new Date(2019, 1, 1), 29.9],
+					[new Date(2019, 2, 1), null],
+					[new Date(2019, 3, 1), 30.4],
+					[new Date(2019, 4, 1), 40.4],
+					[new Date(2019, 5, 1), 50.4],
+					[new Date(2019, 6, 1), 60.4],
+					[new Date(2019, 7, 1), 70.4],
+					[new Date(2019, 8, 1), 80.4],
+					[new Date(2019, 9, 1), null],
+					[new Date(2019, 10, 1), 75],
+					[new Date(2019, 11, 1), 65],
+					[new Date(2019, 12, 1), null]
+				]
+			}
+		]}
+		plotLines={[{color: 'red', value: 25, label: 'Label text'}]}
+		plotBands={[
+			{color: '#4a919e', label: 'Quarter 1', from: new Date(2019, 1, 1), to: new Date(2019, 4, 1)},
+			{color: '#bed3c3', label: 'Quarter 2', from: new Date(2019, 4, 1), to: new Date(2019, 7, 1)},
+			{color: '#b7caca', label: 'Quarter 3', from: new Date(2019, 7, 1), to: new Date(2019, 10, 1)},
+			{
+				color: '#F2F2F2',
+				label: 'Quarter 4',
+				labelColor: '#808080',
+				from: new Date(2019, 10, 1),
+				to: new Date(2019, 12, 31)
+			}
+		]}
+	/>
+</Playground>
+
+<Playground>
+	<BarChart
+		type="category"
+		showLegend
+		series={[
+			{
+				name: 'Legend of Chart 2',
+				color: 'lightgrey',
+				data: [
+					['Jan', 35],
+					['Feb', 61.5],
+					['Mar', 136.4],
+					['Apr', 126.4],
+					['May', 146.4],
+					['Jun', 166.4],
+					['Jul', 156.4],
+					['Aug', 186.4],
+					['Sep', 116.4],
+					['Oct', 86.4],
+					['Nov', 133.4],
+					['Dec', 124.4]
+				]
+			}
+		]}
+		plotLines={[{color: '#228fc9', value: 30, label: 'Label text'}]}
+	/>
+</Playground>

@@ -1,0 +1,65 @@
+{
+	"name": "@opll/some-react-components",
+	"version": "1.0.0-dev",
+	"description": "shared react components library",
+	"repository": "",
+	"author": "Osmany Llerena",
+	"license": "SEE LICENSE IN LICENSE",
+	"private": false,
+	"main": "lib/index.js",
+	"files": [
+		"lib",
+		"*.js.flow"
+	],
+	"dependencies": {
+		"@emotion/core": "10.0.10",
+		"emotion-theming": "^10.0.10",
+		"highcharts": "7.1.1"
+	},
+	"devDependencies": {
+		"@babel/cli": "^7.2.3",
+		"@babel/core": "^7.3.4",
+		"@babel/preset-env": "^7.3.4",
+		"@babel/preset-react": "^7.0.0",
+		"@types/node": "^11.9.6",
+		"@types/react": "^16.8.6",
+		"@types/react-dom": "^16.8.2",
+		"@typescript-eslint/eslint-plugin": "^1.4.2",
+		"@typescript-eslint/parser": "^1.4.2",
+		"docz": "^1.2.0",
+		"docz-theme-default": "^1.2.0",
+		"eslint": "^5.14.1",
+		"eslint-config-prettier": "^4.1.0",
+		"eslint-plugin-enforce-react-hooks": "osdnk/eslint-enforce-react-hooks",
+		"eslint-plugin-filenames": "^1.3.2",
+		"eslint-plugin-import": "^2.16.0",
+		"eslint-plugin-jest": "^22.3.0",
+		"eslint-plugin-prettier": "^3.0.1",
+		"eslint-plugin-react": "^7.12.4",
+		"eslint-plugin-react-hooks": "^1.3.0",
+		"husky": "^1.3.1",
+		"jest": "^24.1.0",
+		"lint-staged": "^8.1.4",
+		"prettier": "^1.16.4",
+		"react": "^16.8.3",
+		"react-dom": "^16.8.3",
+		"typescript": "^3.5.2"
+	},
+	"scripts": {
+		"docz:dev": "docz dev",
+		"docz:build": "docz build",
+		"build": "babel src -d lib --copy-files",
+		"lint": "eslint -c .eslintrc --ext ts,tsx src"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged"
+		}
+	},
+	"lint-staged": {
+		"{src/**/*.js,package.json}": [
+			"prettier --write",
+			"git add"
+		]
+	}
+}

@@ -1,0 +1,24 @@
+// @flow
+
+export type Point {
+	name: string,
+	y: number, // numeric value
+	visible: boolean //default: true
+}
+
+export type Series {
+	name: string,
+	colors: string[], // Please entry only HEX or RGB
+	data: ([string, number] | Point)[],
+	outerRadius?: number,
+	innerRadius?: number,
+}
+
+export type Props = {
+	tooltipValueDecimals: number,
+	valueUnit?: string,
+	series: Series[],
+	showExportMenu?: boolean,
+	showLegend: boolean,
+	locale: string //e.g. "de-DE"
+}

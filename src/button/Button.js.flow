@@ -1,0 +1,4 @@
+export type Props = {
+	/** renders the button with the primary color */
+	primary?: boolean
+} | React.ElementConfig<typeof HTMLButtonElement>;
