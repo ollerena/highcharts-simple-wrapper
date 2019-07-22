@@ -1,37 +1,13 @@
-import React, {useEffect, useRef, useMemo} from 'react';
+import React, {useEffect, useRef, useMemo, useCallback} from 'react';
 import {Options, Chart as ChartType} from 'highcharts';
-
-const loadHighcharts = async (options: Options) => {
-	const {exporting, chart} = options;
-	const modules: string[] = [];
-	if (chart && chart.type && chart.type === 'bubble') {
-		modules.push('highcharts-more.js');
-	}
-	if (exporting && exporting.enabled) {
-		modules.push('modules/exporting.js');
-	}
-
-	const Highcharts = await import('highcharts');
-	if (modules.length > 0) {
-		return await Promise.all([
-			...modules.map(module => {
-				return import(`highcharts/${module}`);
-			})
-		]).then(importedModules => {
-			importedModules.forEach(module => module(Highcharts));
-			return Highcharts;
-		});
-	}
-	return Highcharts;
-};
 
 interface Props {
 	options: Options;
+	showExportMenu: boolean;
 	locale: string;
 }
-
 //Should only be used by chart-components
-const Chart = ({options, locale}: Props) => {
+const Chart = ({options, showExportMenu, locale}: Props) => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const chartRef = useRef<ChartType>();
 
@@ -40,38 +16,77 @@ const Chart = ({options, locale}: Props) => {
 		return res ? res.splice(1, 2) : ['\u0020', '.'];
 	}, [locale]);
 
-	useEffect(() => {
-		const legend = {
-			symbolRadius: 0
-		};
-		if (chartRef.current) {
-			chartRef.current.update(options, true, true);
-		} else {
-			if (Object.keys(options).length > 0) {
-				loadHighcharts(options).then((Highcharts: any) => {
-					Highcharts.setOptions({
-						legend: options.chart && options.chart.type !== 'bubble' ? legend : undefined,
-						lang: {
-							thousandsSep: thousandSeparator,
-							decimalPoint: decimalSepearator
-						},
-						credits: {
-							enabled: false
-						},
-						title: {text: ''},
-						subtitle: {text: ''}
-					});
-					chartRef.current = Highcharts.chart(containerRef.current, options);
-				});
-			}
+	const createChart = useCallback((options: Options, Highcharts: any) => {
+		Highcharts.setOptions({
+			credits: {
+				enabled: false
+			},
+			title: {text: ''},
+			subtitle: {text: ''}
+		});
+		chartRef.current = Highcharts.chart(containerRef.current, options);
+	}, []);
+
+
+	const loadHighcharts = useCallback(newOptions => {
+
+		if (!containerRef || !containerRef.current) {
+			throw Error('containerRef is null');
 		}
-	}, [options, thousandSeparator, decimalSepearator]);
+
+		const {exporting, chart} = newOptions;
+		const modules: Promise<any>[] = [];
+		if (chart && chart.type && chart.type === 'bubble') {
+			modules.push(import('highcharts/highcharts-more'));
+		}
+		if (exporting && exporting.enabled) {
+			modules.push(import('highcharts/modules/exporting.js'));
+		}
+
+		if (modules.length > 0) {
+			Promise
+			.all([import('highcharts'), ...modules])
+			.then(([Highcharts, ...importedModules]) => {
+					importedModules.forEach(module => {
+						module.default(Highcharts)
+					});
+					createChart(newOptions, Highcharts);
+		});
+		} else {
+			import('highcharts').then(Highcharts => {
+				createChart(newOptions, Highcharts);
+			});
+		}
+	}, [showExportMenu, createChart]);
+
+	useEffect(() => {
+		if (!containerRef || !containerRef.current) {
+			throw Error('containerRef is null');
+		}
+
+		const newOptions = {
+			...options,
+			exporting: {
+				enabled: showExportMenu
+			}
+		};
+
+		if (chartRef.current) {
+			chartRef.current.update(newOptions, true, true);
+		} else {
+			if (Object.keys(newOptions).length > 0) {
+				loadHighcharts(newOptions)
+			}
+
+		}
+	}, [options, showExportMenu, loadHighcharts]);
 
 	return <div ref={containerRef} />;
 };
 
 Chart.defaultProps = {
-	showExportMenu: false
+	showExportMenu: false,
+	locale: 'en-GB'
 };
 
 export default Chart;
