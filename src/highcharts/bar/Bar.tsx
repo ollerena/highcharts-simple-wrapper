@@ -143,5 +143,9 @@ const Bar = ({type, series, plotLines, plotBands, showLegend, showExportMenu, lo
 
 	return <Chart options={options} locale={locale} />;
 };
+Bar.defaultProps = {
+	series: [],
+	showLegend: false
+};
 
 export default Bar;

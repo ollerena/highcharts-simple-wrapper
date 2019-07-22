@@ -78,11 +78,9 @@ const Pie = ({series, valueUnit, showExportMenu, locale, tooltipValueDecimals, s
 
 	return <Chart options={options} locale={locale} />;
 };
-PieChart.defaultProps = {
+Pie.defaultProps = {
 	tooltipValueDecimals: 2,
-	showExportMenu: false,
 	series: [],
-	locale: 'en-GB',
 	showLegend: false
 };
 export default Pie;

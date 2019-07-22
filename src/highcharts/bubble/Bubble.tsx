@@ -141,7 +141,11 @@ const Bubble = ({type, series, plotLines, plotBands, showExportMenu, locale}: Pr
 		});
 	}, [series, type, plotLines, showExportMenu, plotBands]);
 
-	return <Chart options={options} locale={locale} />;
+	return <Chart options={options} showExportMenu={showExportMenu || false} locale={locale} />;
+};
+
+Bubble.defaultProps = {
+	series: []
 };
 
 export default Bubble;

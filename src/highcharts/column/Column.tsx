@@ -144,4 +144,9 @@ const Column = ({type, series, plotLines, plotBands, showLegend, showExportMenu,
 	return <Chart options={options} locale={locale} />;
 };
 
+Column.defaultProps = {
+	series: [],
+	showLegend: false
+};
+
 export default Column;
