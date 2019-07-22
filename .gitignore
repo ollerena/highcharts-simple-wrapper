@@ -1,0 +1,5 @@
+/.docz/
+/lib/
+/node_modules/
+
+*.log

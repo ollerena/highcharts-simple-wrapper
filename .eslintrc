@@ -1,0 +1,54 @@
+{
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"ecmaFeatures": {
+			"jsx": true
+		},
+		"project": "./tsconfig.json"
+	},
+	"env": {
+		"node": true,
+		"es6": true,
+		"browser": true,
+		"jest/globals": true
+	},
+	"plugins": ["@typescript-eslint", "react", "react-hooks", "enforce-react-hooks", "import", "filenames", "jest"],
+	"extends": [
+		"eslint:recommended",
+		"plugin:@typescript-eslint/recommended",
+		"plugin:react/recommended",
+		"prettier/standard",
+		"prettier/react",
+		"prettier/@typescript-eslint",
+		"plugin:import/recommended",
+		"plugin:import/errors",
+		"plugin:import/warnings",
+		"plugin:jest/recommended"
+	],
+	"rules": {
+		"@typescript-eslint/no-unused-vars": [2, {"args": "none", "ignoreRestSiblings": true}],
+		"@typescript-eslint/no-use-before-define": 0,
+		"@typescript-eslint/explicit-function-return-type": 0,
+		"@typescript-eslint/explicit-member-accessibility": 0,
+		"@typescript-eslint/indent": ["error", "tab"],
+		"enforce-react-hooks/enforce-react-hooks": 2,
+		"filenames/match-exported": [2, ["pascal", "camel"]],
+		"import/newline-after-import": 2,
+		"import/no-duplicates": 2,
+		"import/order": [2, {"newlines-between": "always", "groups": ["external"]}],
+		"no-console": [2, {"allow": ["warn", "error"]}],
+		"no-unused-vars": 0,
+		"react-hooks/rules-of-hooks": "error",
+		"react-hooks/exhaustive-deps": "warn"
+	},
+	"settings": {
+		"import/resolver": {
+			"node": {
+				"extensions": [".ts", ".tsx"]
+			}
+		},
+		"react": {
+			"version": "detect"
+		}
+	}
+}
