@@ -141,7 +141,7 @@ const Bar = ({type, series, plotLines, plotBands, showLegend, showExportMenu, lo
 		});
 	}, [series, type, plotLines, showLegend, showExportMenu, plotBands]);
 
-	return <Chart options={options} locale={locale} />;
+	return <Chart options={options} locale={locale} showExportMenu={showExportMenu} />;
 };
 Bar.defaultProps = {
 	series: [],

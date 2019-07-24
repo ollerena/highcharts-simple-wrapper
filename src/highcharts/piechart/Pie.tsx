@@ -76,7 +76,7 @@ const Pie = ({series, valueUnit, showExportMenu, locale, tooltipValueDecimals, s
 		});
 	}, [series, valueUnit, showExportMenu, tooltipValueDecimals, showLegend]);
 
-	return <Chart options={options} locale={locale} />;
+	return <Chart options={options} locale={locale} showExportMenu={showExportMenu}/>;
 };
 Pie.defaultProps = {
 	tooltipValueDecimals: 2,

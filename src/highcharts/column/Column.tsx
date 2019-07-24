@@ -141,7 +141,7 @@ const Column = ({type, series, plotLines, plotBands, showLegend, showExportMenu,
 		});
 	}, [series, type, plotLines, showLegend, showExportMenu, plotBands]);
 
-	return <Chart options={options} locale={locale} />;
+	return <Chart options={options} locale={locale} showExportMenu={showExportMenu}/>;
 };
 
 Column.defaultProps = {
