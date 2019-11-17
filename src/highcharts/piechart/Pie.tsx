@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {Options, SeriesPieOptions, SeriesPieDataOptions} from 'highcharts';
 
+import * as ChartUtils from '../ChartUtils';
+
 import Chart from '../Chart';
 
 const convertSeries = (series: Series[], valueUnit?: string, tooltipValueDecimals?: number): SeriesPieOptions[] => {
@@ -27,8 +29,7 @@ export interface Point {
 	visible: boolean; //default: true (by highcharts)
 }
 
-export interface Series {
-	name: string;
+export interface Series extends ChartUtils.Series {
 	colors: string[]; // Please entry only HEX or RGB
 	data: ([string, number] | Point)[];
 	outerRadius?: number;

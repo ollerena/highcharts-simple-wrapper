@@ -2,8 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {Options} from 'highcharts';
 
 import Chart from '../Chart';
-
-const DEFAULT_PLOTLINE_COLOR = '#bfbfbf'; //grey
+import * as ChartUtils from '../ChartUtils';
 
 const initialOptions: Options = {
 	chart: {
@@ -17,75 +16,22 @@ const initialOptions: Options = {
 	}
 };
 
-type DashStyle =
-	| 'Solid'
-	| 'ShortDash'
-	| 'ShortDot'
-	| 'ShortDashDot'
-	| 'ShortDashDotDot'
-	| 'Dot'
-	| 'Dash'
-	| 'LongDash'
-	| 'DashDot'
-	| 'LongDashDot'
-	| 'LongDashDotDot';
-
-export interface Series {
+export interface Series extends ChartUtils.Series{
 	/**Only needed for Type Checking, should not be setted*/
 	type: never;
-	name: string;
 	color: string;
 	data: [Date | string, number | null][];
-}
-
-export interface PlotLine {
-	color?: string;
-	value: number;
-	label?: string;
-	dashStyle?: DashStyle;
-}
-
-export interface PlotBand {
-	color: string;
-	from: Date;
-	to: Date;
-	label: string;
-	labelColor: string;
 }
 
 export interface Props {
 	type: 'datetime' | 'category';
 	series: Series[];
-	plotLines?: PlotLine[];
-	plotBands?: PlotBand[];
+	plotLines?: ChartUtils.PlotLine[];
+	plotBands?: ChartUtils.PlotBand[];
 	showLegend?: boolean;
 	showExportMenu?: boolean;
 	locale: string; //e.g. "de-DE"
-}
-
-const generatePlotLine = (plotLine: PlotLine) => ({
-	dashStyle: plotLine.dashStyle || 'ShortDot',
-	width: 2,
-	value: plotLine.value,
-	label: {
-		text: plotLine.label || ''
-	},
-	color: plotLine.color || DEFAULT_PLOTLINE_COLOR,
-	zIndex: 3
-});
-
-const generatePlodBand = (plotBand: PlotBand) => ({
-	color: plotBand.color,
-	from: plotBand.from.valueOf(),
-	to: plotBand.to.valueOf(),
-	label: {
-		text: plotBand.label,
-		style: {
-			color: plotBand.labelColor,
-			align: 'left'
-		}
-	}
-});
+};
 
 const generateSeries = (series: Series) => ({
 	...series,
@@ -123,11 +69,11 @@ const Bar = ({type, series, plotLines, plotBands, showLegend, showExportMenu, lo
 						//@ts-ignore
 						return this.tickPositions;
 					},
-					plotBands: plotBands ? plotBands.map(generatePlodBand) : undefined
+					plotBands: plotBands ? plotBands.map(ChartUtils.generatePlodBand) : undefined
 				},
 				yAxis: {
 					title: {text: null},
-					plotLines: plotLines ? plotLines.map(generatePlotLine) : undefined
+					plotLines: plotLines ? plotLines.map(ChartUtils.generatePlotLine) : undefined
 				},
 				plotOptions: {
 					...prevOptions.plotOptions,

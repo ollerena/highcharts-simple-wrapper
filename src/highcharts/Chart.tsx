@@ -27,7 +27,6 @@ const Chart = ({options, showExportMenu, locale}: Props) => {
 		chartRef.current = Highcharts.chart(containerRef.current, options);
 	}, []);
 
-
 	const loadHighcharts = useCallback(newOptions => {
 
 		if (!containerRef || !containerRef.current) {
