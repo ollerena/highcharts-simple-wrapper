@@ -34,7 +34,8 @@ type Series {
 	type: never;
 	name: string;
 	color: string;
-	data: [Date | string, number | null][];
+	data: 	| [Date | string | number , number, number][] 
+			| {x: Date | string | number, y: number, z: number, name: string, color: string}[];
 };
 ```
 
@@ -61,40 +62,28 @@ tyoe PlotBand {
 
 <Playground>
 	<Bubble
-		type="datetime"
+		showLegend
+		labelsFormat='{value} Euro'
 		showExportMenu
 		series={[
 			{
 				name: 'Legend of Chart 1',
 				color: '#000',
 				data: [
-					[new Date(2019, 12, 1), null],
-					[new Date(2019, 1, 1), 29.9],
-					[new Date(2019, 2, 1), null],
-					[new Date(2019, 3, 1), 30.4],
-					[new Date(2019, 4, 1), 40.4],
-					[new Date(2019, 5, 1), 50.4],
-					[new Date(2019, 6, 1), 60.4],
-					[new Date(2019, 7, 1), 70.4],
-					[new Date(2019, 8, 1), 80.4],
-					[new Date(2019, 9, 1), null],
-					[new Date(2019, 10, 1), 75],
-					[new Date(2019, 11, 1), 65],
-					[new Date(2019, 12, 1), null]
+					[1, 1, 1],
+					[2, 29.9, 29.9],
+					[3, null, 0],
+					[4, 30.4, 30,4],
+					[4, 40.4, 40,4],
+					[5, 50.4, 50.4],
+					[6, 60.4, 60.4],
+					[7, 70.4, 70.4],
+					[8, 80.4, 80.4],
+					[9, null, 0],
+					[10, 75, 75],
+					[11, 65, 65],
+					[12, null, 0]
 				]
-			}
-		]}
-		plotLines={[{color: 'red', value: 25, label: 'Label text'}]}
-		plotBands={[
-			{color: '#4a919e', label: 'Quarter 1', from: new Date(2018, 12, 1), to: new Date(2019, 4, 1)},
-			{color: '#bed3c3', label: 'Quarter 2', from: new Date(2019, 4, 1), to: new Date(2019, 7, 1)},
-			{color: '#b7caca', label: 'Quarter 3', from: new Date(2019, 7, 1), to: new Date(2019, 10, 1)},
-			{
-				color: '#F2F2F2',
-				label: 'Quarter 4',
-				labelColor: '#808080',
-				from: new Date(2019, 10, 1),
-				to: new Date(2019, 12, 31)
 			}
 		]}
 	/>

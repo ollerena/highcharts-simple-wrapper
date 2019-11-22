@@ -3,6 +3,8 @@ import {Options} from 'highcharts';
 
 import Chart from '../Chart';
 import * as ChartUtils from '../ChartUtils';
+import { Color } from 'csstype';
+import { type } from 'os';
 
 const initialOptions: Options = {
 	chart: {
@@ -16,28 +18,27 @@ const initialOptions: Options = {
 	}
 };
 
+export type SeriesData = [number, number, number];
+
+
 export interface Series extends ChartUtils.Series {
 	/**Only needed for Type Checking, should not be setted*/
 	type: never;
 	color: string;
-	data: [Date | string, number | null][];
+	data: SeriesData[];
 }
 
 export interface Props {
-	type: 'datetime' | 'category';
 	series: Series[];
 	plotLines?: ChartUtils.PlotLine[];
 	plotBands?: ChartUtils.PlotBand[];
 	showExportMenu?: boolean;
 	locale: string; //e.g. "de-DE"
+	labelsFormat?: string
+	showLegend: boolean
 }
 
-const generateSeries = (series: Series) => ({
-	...series,
-	data: series.data.map(([key, value]) => (key instanceof Date ? [key.valueOf(), value] : [key, value]))
-});
-
-const Bubble = ({type, series, plotLines, plotBands, showExportMenu, locale}: Props) => {
+const Bubble = ({series, plotLines, plotBands, showExportMenu, locale, labelsFormat, showLegend}: Props) => {
 	const [options, setOptions] = useState<Options>(initialOptions);
 
 	useEffect(() => {
@@ -49,43 +50,24 @@ const Bubble = ({type, series, plotLines, plotBands, showExportMenu, locale}: Pr
 					enabled: showExportMenu
 				},
 				legend: {
-					enabled: false,
+					enabled: showLegend,
 					symbolRadius: undefined
 				},
 				xAxis: {
 					...prevOptions.xAxis,
-					labels: {enabled: true},
-					type: type,
-					tickPositioner: function() {
-						if (type === 'datetime' && series.length && series[0].data.length <= 12) {
-							//show all tick in the xAxis
-							const ticks = generateSeries(series[0]).data.map(item => item[0]);
-
-							/**because issue: https://github.com/highcharts/highcharts/issues/6467 */
-							//@ts-ignore
-							ticks.info = this.tickPositions.info;
-							return ticks;
-						}
-						//@ts-ignore
-						return this.tickPositions;
-					},
-					plotBands: plotBands ? plotBands.map(ChartUtils.generatePlodBand) : undefined
+					labels: {enabled: true}
 				},
 				yAxis: {
 					title: {text: null},
+					labels: {
+						format: labelsFormat ? labelsFormat : '{value}'
+					},
 					plotLines: plotLines ? plotLines.map(ChartUtils.generatePlotLine) : undefined
 				},
-				plotOptions: {
-					...prevOptions.plotOptions,
-					column: {
-						...(prevOptions.plotOptions ? prevOptions.plotOptions.column : undefined),
-						pointPlacement: type === 'datetime' ? 'between' : undefined
-					}
-				},
-				series: series ? series.map(generateSeries) : []
+				series: series ? series : []
 			};
 		});
-	}, [series, type, plotLines, showExportMenu, plotBands]);
+	}, [series, plotLines, showExportMenu, plotBands, labelsFormat, showLegend]);
 
 	return <Chart options={options} showExportMenu={showExportMenu || false} locale={locale} />;
 };
