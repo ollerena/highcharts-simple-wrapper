@@ -1,0 +1,37 @@
+type DashStyle =
+	| 'Solid'
+	| 'ShortDash'
+	| 'ShortDot'
+	| 'ShortDashDot'
+	| 'ShortDashDotDot'
+	| 'Dot'
+	| 'Dash'
+	| 'LongDash'
+	| 'DashDot'
+	| 'LongDashDot'
+	| 'LongDashDotDot';
+
+interface Series {
+	/**Only needed for Type Checking, should not be setted*/
+	type: empty;
+	name: string;
+	color: string;
+	/**
+	 * If the type is datetime [[datetime, value]],
+	 * if the type is category [[category, value]]
+	 * */
+	data: [number, number][];
+}
+interface PlotLine {
+	color?: string;
+	value: number;
+	label?: string;
+	dashStyle?: DashStyle;
+}
+declare type Props = {
+	type: "datetime" | "category";
+	series: Series[];
+	plotLines?: PlotLine[] | PlotLine;
+	showLegend?: boolean;
+	showExportMenu?: boolean
+} | React.ElementConfig<typeof HTMLDivElement>;
